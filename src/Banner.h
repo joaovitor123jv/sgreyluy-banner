@@ -6,23 +6,17 @@
 #define TEMPLATE_END ")\n"
 
 struct Banner {
-  int x;
-  int y;
-  int xModifier;
-  int yModifier;
-  int width;
-  int height;
+  int x;          int y;
+  int xModifier;  int yModifier;
+  int width;      int height;
   char *title;
 };
 
 struct Banner* initBanner(char *time) {
   struct Banner* banner = malloc(sizeof(struct Banner));
 
-  if(banner == NULL) {
-    warning("Failed to alloc banner memory");
-    exit(1);
-
-  } else {
+  if(banner == NULL) err("Failed to alloc banner memory");
+  else {
     int bannerWidth = strlen(time) + strlen(TEMPLATE_START) + strlen(TEMPLATE_END) + 1;
 
     banner->title = NULL;
@@ -38,8 +32,7 @@ struct Banner* initBanner(char *time) {
     if(banner->title == NULL) {
       free(banner);
       banner = NULL;
-      warning("Failed to allocate memory for banner->title");
-      exit(1);
+      err("Failed to allocate memory for banner->title");
     }
 
     sprintf(banner->title, "%s%s%s", TEMPLATE_START, time, TEMPLATE_END);
@@ -49,10 +42,7 @@ struct Banner* initBanner(char *time) {
 }
 
 void animateBanner(struct Banner *banner) {
-  if(banner == NULL) {
-    warning("Banner is null on animateBanner");
-    exit(1);
-  }
+  if(banner == NULL) err("Banner is null on animateBanner");
 
   if(((banner->x + banner->xModifier + banner->width) >= SCREEN_WIDTH)
       || ((banner->x + banner->xModifier) <= 0)) {
@@ -69,34 +59,20 @@ void animateBanner(struct Banner *banner) {
 }
 
 void printBanner(struct Banner *banner) {
-  if(banner == NULL) {
-    warning("Banner is null on printBanner");
-    exit(1);
-  }
-
-  if(banner->title == NULL) {
-    warning("Banner->title is null on printBanner");
-    exit(1);
-  }
+  if(banner == NULL) err("Banner is null on printBanner");
+  if(banner->title == NULL) err("Banner->title is null on printBanner");
 
   int i = 0;
   int j = 0;
 
   system("clear");
 
-  for(j = 0; j < banner->y; j++) {
-    printf("\n");
-  }
-
-  for(i = 0; i < banner->x; i++) {
-    printf(" ");
-  }
+  for(j = 0; j < banner->y; j++) printf("\n");
+  for(i = 0; i < banner->x; i++) printf(" ");
 
   printf("%s", banner->title);
 
-  for(i = banner->y; i < SCREEN_HEIGHT; i++) {
-    printf("\n");
-  }
+  for(i = banner->y; i < SCREEN_HEIGHT; i++) printf("\n");
 }
 
 void destroyBanner(struct Banner* banner) {

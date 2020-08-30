@@ -10,7 +10,6 @@
 
 int main() {
   char time[6];
-  /* char currentTime[6]; */
   struct Banner *banner = NULL;
 
   printf("Digite o horário que você vai aparecer no formato hh:mm\n");
@@ -24,7 +23,6 @@ int main() {
   while(1) {
     animateBanner(banner);
     printBanner(banner);
-    /* sleep(1); */
     usleep(150000);
   }
 
